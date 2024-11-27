@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `vendeur` (
   `nom` VARCHAR(50) NULL,
   `numeroSuperviseur` TINYINT(3) NULL,
   PRIMARY KEY (`numeroVendeur`),
-  INDEX `fk_vendeur_vendeur_idx` (`numeroSuperviseur` ASC) VISIBLE,
+  INDEX `fk_vendeur_vendeur_idx` (`numeroSuperviseur` ASC),
   CONSTRAINT `fk_vendeur_vendeur`
     FOREIGN KEY (`numeroSuperviseur`)
     REFERENCES `vendeur` (`numeroVendeur`)
@@ -51,7 +51,10 @@ CREATE TABLE IF NOT EXISTS `client` (
   `ville` VARCHAR(50) NULL,
   `telephone` CHAR(10) NULL,
   `dateNaissance` DATE NULL,
-  PRIMARY KEY (`codeClient`))
+  PRIMARY KEY (`codeClient`),
+  constraint ck_titre_valide CHECK('titre' IN ('Mlle','M.','Mme'))
+  )
+  
 ENGINE = InnoDB;
 
 
@@ -79,9 +82,9 @@ CREATE TABLE IF NOT EXISTS `commande` (
   `modePaiement` CHAR(2) NOT NULL,
   `numeroVendeur` TINYINT(3) NULL,
   PRIMARY KEY (`numeroCommande`),
-  INDEX `fk_commande_vendeur1_idx` (`numeroVendeur` ASC) VISIBLE,
-  INDEX `fk_commande_client1_idx` (`codeClient` ASC) VISIBLE,
-  INDEX `fk_commande_paiement1_idx` (`modePaiement` ASC) VISIBLE,
+  INDEX `fk_commande_vendeur1_idx` (`numeroVendeur` ASC),
+  INDEX `fk_commande_client1_idx` (`codeClient` ASC),
+  INDEX `fk_commande_paiement1_idx` (`modePaiement` ASC),
   CONSTRAINT `fk_commande_vendeur1`
     FOREIGN KEY (`numeroVendeur`)
     REFERENCES `vendeur` (`numeroVendeur`)
@@ -125,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `livre` (
   `prixCatalogue` DECIMAL(10,2) NULL,
   `nbrePages` SMALLINT(5) NULL,
   PRIMARY KEY (`numeroLivre`),
-  INDEX `fk_livre_categorie1_idx` (`codeCategorie` ASC) VISIBLE,
+  INDEX `fk_livre_categorie1_idx` (`codeCategorie` ASC),
   CONSTRAINT `fk_livre_categorie1`
     FOREIGN KEY (`codeCategorie`)
     REFERENCES `categorie` (`codeCategorie`)
@@ -145,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `detailCommande` (
   `prixUnitaire` DECIMAL(10,2) NULL,
   `quantite` SMALLINT(6) NULL,
   PRIMARY KEY (`numeroCommande`, `numeroLivre`),
-  INDEX `fk_detailCommande_livre1_idx` (`numeroLivre` ASC) VISIBLE,
+  INDEX `fk_detailCommande_livre1_idx` (`numeroLivre` ASC),
   CONSTRAINT `fk_detailCommande_commande1`
     FOREIGN KEY (`numeroCommande`)
     REFERENCES `commande` (`numeroCommande`)
@@ -180,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `livre_auteur` (
   `codeAuteur` SMALLINT(5) NOT NULL,
   `numeroLivre` SMALLINT(5) NOT NULL,
   PRIMARY KEY (`codeAuteur`, `numeroLivre`),
-  INDEX `fk_livre_auteur_livre1_idx` (`numeroLivre` ASC) VISIBLE,
+  INDEX `fk_livre_auteur_livre1_idx` (`numeroLivre` ASC),
   CONSTRAINT `fk_livre_auteur_auteur1`
     FOREIGN KEY (`codeAuteur`)
     REFERENCES `auteur` (`codeAuteur`)
