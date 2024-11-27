@@ -16,7 +16,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
-
+DROP DATABASE IF EXISTS bd_tp_synthese;
+CREATE DATABASE bd_tp_synthese;
+USE bd_tp_synthese;
 -- -----------------------------------------------------
 -- Table `vendeur`
 -- -----------------------------------------------------
@@ -24,7 +26,7 @@ DROP TABLE IF EXISTS `vendeur` ;
 
 CREATE TABLE IF NOT EXISTS `vendeur` (
   `numeroVendeur` TINYINT(3) UNSIGNED NOT NULL,
-  `nom` VARCHAR(50) NULL,
+  `nom` VARCHAR(50) NOT NULL,
   `numeroSuperviseur` TINYINT(3) UNSIGNED NULL,
   PRIMARY KEY (`numeroVendeur`),
   INDEX `fk_vendeur_vendeur_idx` (`numeroSuperviseur` ASC) VISIBLE,
@@ -131,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `livre` (
     REFERENCES `categorie` (`codeCategorie`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-    CONSTRAINT ck_nbrePages_valide CHECK (nbrePages BETWEEN 0 AND 1000))
+    CONSTRAINT ck_nbrePages_valide CHECK (nbrePages BETWEEN 0 AND 10000))
 ENGINE = InnoDB;
 
 
@@ -157,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `detailCommande` (
     REFERENCES `livre` (`numeroLivre`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-    CONSTRAINT ck_prix_valide CHECK (prixUnitaire > 0),
+    CONSTRAINT ck__valide CHECK (prixUnitaire > 0),
     CONSTRAINT ck_quantite_valide CHECK (quantite > 0))
 ENGINE = InnoDB;
 
