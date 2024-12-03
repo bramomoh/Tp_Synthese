@@ -16,3 +16,29 @@ FROM livre WHERE prixCatalogue > (SELECT AVG(prixCatalogue) from livre where liv
 /********************Question R9***********************/
 SELECT vendeur.nom, superviseur.nom from vendeur INNER JOIN vendeur AS superviseur ON vendeur.numeroVendeur = superviseur.numeroSuperviseur;
 /********************Question R10***********************/
+SELECT livre.numeroLivre, titre, codeCategorie, descriptif, prixCatalogue, nbrePages, codeAuteur FROM livre INNER JOIN livre_auteur ON livre.numeroLivre = livre_auteur.numeroLivre 
+WHERE codeCategorie = (SELECT codeCategorie FROM livre WHERE titre ="Le sagouin") AND
+codeAuteur = (SELECT codeAuteur FROM livre_auteur INNER JOIN livre ON livre_auteur.numeroLivre = livre.numeroLivre WHERE livre.titre ="Le sagouin");
+/********************Question P2***********************/
+DELIMITER |
+DROP PROCEDURE IF EXISTS derniereCommande;
+CREATE PROCEDURE derniereCommande(
+ IN p_codeClient char(6)
+)
+BEGIN
+	DECLARE v_numeroCommande INT(10);
+    SELECT numeroCommande FROM commande WHERE codeClient = p_codeClient order by numeroCommande DESC
+    LIMIT 1 INTO v_numeroCommande;
+    SELECT * FROM detailCommande WHERE numeroCommande = v_numeroCommande;
+END |
+DELIMITER ;
+CALL derniereCommande("AIM001");
+/********************Question P3***********************/
+DELIMITER |
+DROP PROCEDURE IF EXISTS listeSuperviseur;
+CREATE PROCEDURE listeSuperviseur()
+BEGIN
+	SELECT  DISTINCT vendeur.numeroVendeur, vendeur.nom FROM vendeur INNER JOIN vendeur AS superviseur ON vendeur.numeroVendeur = superviseur.numeroSuperviseur;
+END |
+DELIMITER ;
+CALL listeSuperviseur();
