@@ -1,0 +1,18 @@
+USE bd_tp_synthese;
+/********************Question R6***********************/
+CREATE OR REPLACE VIEW vueCommandeParClient AS
+	SELECT concat(client.titre, " ",UPPER(client.nom), " ",client.prenom) AS client, count(commande.codeClient) AS commande, sum(detailCommande.prixUnitaire * detailCommande.quantite) AS total
+    FROM (client INNER JOIN commande ON client.codeClient = commande.codeClient)
+    INNER JOIN detailCommande ON commande.numeroCommande = detailCommande.numeroCommande
+    GROUP BY client.nom;
+SELECT * FROM vueCommandeParClient;
+/********************Question R7***********************/
+SELECT * FROM vueCommandeParClient 
+WHERE commande >= 8 AND total > 100
+ORDER BY COMMANDE;
+/********************Question R8***********************/
+SELECT numeroLivre, titre, codeCategorie, descriptif, prixCatalogue, nbrePages
+FROM livre WHERE prixCatalogue > (SELECT AVG(prixCatalogue) from livre where livre.numeroLivre = numeroLivre) +10;
+/********************Question R9***********************/
+SELECT vendeur.nom, superviseur.nom from vendeur INNER JOIN vendeur AS superviseur ON vendeur.numeroVendeur = superviseur.numeroSuperviseur;
+/********************Question R10***********************/
