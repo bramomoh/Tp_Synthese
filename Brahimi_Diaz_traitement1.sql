@@ -37,11 +37,14 @@ FOR EACH ROW
 BEGIN
 DECLARE vPrixCatalogue DECIMAL(10,2);
 SET vPrixCatalogue = (SELECT prixCatalogue FROM livre WHERE livre.numeroLivre = NEW.numeroLivre);
-IF prixUnitaire > vPrixCatalogue THEN
+IF NEW.prixUnitaire < vPrixCatalogue THEN
 SET NEW.prixUnitaire = vPrixCatalogue;
 END IF;
 END|
 DELIMITER ;
+SELECT * from detailcommande;
+INSERT INTO detailcommande VALUES (3,8,9,1);
+select * from livre;
 /********************question D2****************/
 DROP TRIGGER IF EXISTS trigControleAjoutClient;
 DELIMITER |
