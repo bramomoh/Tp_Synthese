@@ -20,8 +20,8 @@ SELECT livre.numeroLivre, titre, codeCategorie, descriptif, prixCatalogue, nbreP
 WHERE codeCategorie = (SELECT codeCategorie FROM livre WHERE titre ="Le sagouin") AND
 codeAuteur = (SELECT codeAuteur FROM livre_auteur INNER JOIN livre ON livre_auteur.numeroLivre = livre.numeroLivre WHERE livre.titre ="Le sagouin");
 /********************Question P2***********************/
-DELIMITER |
 DROP PROCEDURE IF EXISTS derniereCommande;
+DELIMITER |
 CREATE PROCEDURE derniereCommande(
  IN p_codeClient char(6)
 )
@@ -34,8 +34,8 @@ END |
 DELIMITER ;
 CALL derniereCommande("AIM001");
 /********************Question P3***********************/
-DELIMITER |
 DROP PROCEDURE IF EXISTS listeSuperviseur;
+DELIMITER |
 CREATE PROCEDURE listeSuperviseur()
 BEGIN
 	SELECT  DISTINCT vendeur.numeroVendeur, vendeur.nom FROM vendeur INNER JOIN vendeur AS superviseur ON vendeur.numeroVendeur = superviseur.numeroSuperviseur;
