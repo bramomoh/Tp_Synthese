@@ -42,3 +42,20 @@ BEGIN
 END |
 DELIMITER ;
 CALL listeSuperviseur();
+/********************Question P4***********************/
+DROP PROCEDURE IF EXISTS insererLivre;
+DELIMITER |
+CREATE PROCEDURE insererLivre(
+    IN p_titre VARCHAR(255),
+    IN p_codeCategorie CHAR(2),
+    IN p_descriptif TEXT,
+    IN p_prixCatalogue DECIMAL(10,2),
+    IN p_nbrePages SMALLINT(5)
+)
+BEGIN
+    INSERT INTO livre (titre, codeCategorie, descriptif, prixCatalogue, nbrePages)
+    VALUES (p_titre, p_codeCategorie, p_descriptif, p_prixCatalogue, p_nbrePages);
+END |
+DELIMITER ;
+CALL insererLivre('Livre example','LI','Je sais pas quoi mettre c\'est juste un example',15.06,341);
+SELECT * FROM LIVRE;
